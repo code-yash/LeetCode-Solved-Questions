@@ -1,34 +1,85 @@
 class MyHashMap {
-public:
-    vector<int> hash;
-    int capacity = 1e6+1;
-    MyHashMap() {
-        hash.resize(1e6+1, -1);
+private:
+
+    struct node{
+        int key;
+        int value;
+        node* next;
+
+        node(int key, int val){
+            this->key = key;
+            value = val;
+            next = NULL; 
+        }
+
+        node(){
+            key = -1;
+            value = -1;
+            next = NULL;
+        }
+
+    };
+
+    int capacity = 97;
+    vector<node> map;
+
+    int findhash(int key){
+        return key % capacity;
     }
 
-    int findidx(int key){
-        float A = 0.0735;
-        double intpart, fracpart;
-        double num = A * key;
-        fracpart = modf(num, &intpart);
-        int idx = floor(capacity *  fracpart);
-        cout<<idx<<" ";
-        return idx;
+public:
+
+    MyHashMap() {
+        map.resize(capacity);
+        
     }
     
     void put(int key, int value) {
-        // int idx = findidx(key);
-        hash[key] = value;
-    }
+        int idx = findhash(key);
+
+        //tarversing linkedlist
+        node *curr = &map[idx];
+        node *prev = NULL; 
+        while(curr != NULL){
+            if(curr->key == key)
+                {
+                    curr->value = value;
+                    return;
+                }
+            prev = curr;
+            curr = curr->next;
+        }
+
+        prev->next = new node(key, value);
+
+      }
     
     int get(int key) {
-        // int idx = findidx(key);
-        return hash[key];
+        int idx = findhash(key);
+        node *curr = &map[idx];
+        while(curr != NULL){
+            if(curr->key == key)
+                return curr->value;
+            curr = curr->next;
+        }
+        return -1;   
     }
     
     void remove(int key) {
-        // int idx = findidx(key);
-        hash[key] = -1;
+
+        int idx = findhash(key);
+
+        node *curr = &map[idx];
+        node *prev = NULL; 
+        while(curr != NULL){
+            if(curr->key == key)
+                {
+                    prev->next = curr->next;
+                    return;
+                }
+            prev = curr;
+            curr = curr->next;
+        }
     }
 };
 
