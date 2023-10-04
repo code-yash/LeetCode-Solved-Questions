@@ -20,7 +20,7 @@ private:
 
     };
 
-    int capacity = 73;
+    int capacity = 573;
     vector<node> map;
 
     int findhash(int key){
