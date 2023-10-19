@@ -12,27 +12,28 @@
 class Solution {
 public:
 
-    void inorder(TreeNode* root, vector<int> &nodes){
+    bool isValid(TreeNode* root, long lb, long ub){
         if(root == NULL)
-            return;
+            return true;
+        bool left, right;
 
-        inorder(root->left, nodes);
-        nodes.push_back(root->val);
-        inorder(root->right, nodes);
-
-        return;
-    }
-    bool isValidBST(TreeNode* root) {
-
-        vector<int> nodes;
-        inorder(root, nodes);
-
-        for(int i=1; i< nodes.size(); i++){
-            if(nodes[i-1] >= nodes[i])
-                return false;
+        if(root->val > lb && root->val < ub){
+            left = isValid(root->left, lb, root->val);
+            if(left){
+                right = isValid(root->right, root->val, ub);
+            }
+            return left & right;
         }
+    return false;
 
-        return true;
-        
+    }
+
+
+    
+    bool isValidBST(TreeNode* root) {
+        long ub = (long)INT_MAX + 1;
+        long lb = (long)INT_MIN - 1;
+        return isValid(root, lb, ub);
+
     }
 };
