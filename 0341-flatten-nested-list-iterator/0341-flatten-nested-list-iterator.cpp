@@ -36,7 +36,7 @@ private:
     int current;
 
     void preprocess(const vector<NestedInteger>& nestedList) {
-        for (auto item : nestedList) {
+        for (auto &item : nestedList) {
             if (item.isInteger()) {
                 flattened.push_back(item.getInteger());
             } else {
